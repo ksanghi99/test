@@ -4,15 +4,11 @@
   <meta charset="UTF-8" />
   <title>For Mitthi ❤️</title>
 
-  <!-- Romantic Fonts -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       width: 100vw;
@@ -27,8 +23,6 @@
       width: 100%;
       height: 100%;
       position: absolute;
-      top: 0;
-      left: 0;
       justify-content: center;
       align-items: center;
       flex-direction: column;
@@ -36,9 +30,7 @@
       padding: 20px;
     }
 
-    .screen.active {
-      display: flex;
-    }
+    .screen.active { display: flex; }
 
     h1 {
       font-family: 'Pacifico', cursive;
@@ -47,11 +39,7 @@
       margin-bottom: 20px;
     }
 
-    p {
-      font-size: 1.2rem;
-      color: #444;
-      margin-bottom: 30px;
-    }
+    p { font-size: 1.2rem; color: #444; }
 
     button {
       padding: 14px 30px;
@@ -61,89 +49,142 @@
       cursor: pointer;
       background: #ff4d6d;
       color: white;
-      transition: transform 0.2s ease;
     }
 
-    button:hover {
-      transform: scale(1.05);
-    }
+    .gif { width: 260px; margin-top: 25px; }
 
-    .gif {
-      width: 260px;
-      margin-top: 25px;
-    }
+    .no-btn { position: absolute; }
 
-    .no-btn {
+    /* GAME 1 */
+    .heart {
       position: absolute;
+      font-size: 40px;
+      cursor: pointer;
+      animation: pop 0.3s ease;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+
+    .compliment {
+      position: absolute;
+      top: 45%;
+      font-family: 'Pacifico', cursive;
+      font-size: 2rem;
+      color: #ff4d6d;
+      animation: fade 2s ease forwards;
+    }
+
+    @keyframes fade {
+      0% { opacity: 0; transform: scale(0.8); }
+      20% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- PAGE 1 : START -->
-  <div id="startScreen" class="screen active">
-    <h1>Hey Mitthi 💗</h1>
-    <p>I made something special for you</p>
-    <button onclick="goToQuestion()">Start</button>
+<!-- PAGE 1 -->
+<div id="startScreen" class="screen active">
+  <h1>Hey Mitthi 💗</h1>
+  <p>I made something special for you</p>
+  <button onclick="goToQuestion()">Start</button>
+</div>
+
+<!-- PAGE 2 -->
+<div id="questionScreen" class="screen">
+  <h1>Will you be my Valentine? 💖</h1>
+  <div>
+    <button onclick="goToTransition()">Yes 💕</button>
+    <button class="no-btn" id="noBtn">No 🙈</button>
   </div>
+  <img class="gif" src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" />
+</div>
 
-  <!-- PAGE 2 : QUESTION -->
-  <div id="questionScreen" class="screen">
-    <h1>Will you be my Valentine? 💖</h1>
+<!-- TRANSITION 1 -->
+<div id="transitionScreen" class="screen">
+  <h1>Wait a second… 😳</h1>
+  <p>I prepared something special</p>
+  <img class="gif" src="https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif" />
+</div>
 
-    <div style="margin-top: 20px;">
-      <button onclick="goToTransition()">Yes 💕</button>
-      <button class="no-btn" id="noBtn">No 🙈</button>
-    </div>
+<!-- GAME 1 -->
+<div id="game1" class="screen">
+  <h1>Clear the Hearts 💖</h1>
+</div>
 
-    <!-- Cute Cat / Panda GIF -->
-    <img class="gif"
-      src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif"
-      alt="cute cat" />
-  </div>
+<script>
+  const compliments = [
+    "You’re magical ✨",
+    "Your smile melts me 💕",
+    "You’re my favorite thought 🥰",
+    "You make everything better 🌸",
+    "I adore you ❤️",
+    "You’re my happy place 💗",
+    "You’re stunning 😍",
+    "You’re special 💖",
+    "I’m lucky to have you 💞",
+    "You’re my Valentine 💘"
+  ];
 
-  <!-- TRANSITION 1 -->
-  <div id="transitionScreen" class="screen">
-    <h1>Wait a second… 😳</h1>
-    <p>I prepared something special</p>
+  let heartCount = 0;
 
-    <!-- Cat typing GIF -->
-    <img class="gif"
-      src="https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif"
-      alt="cat typing" />
-  </div>
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
 
-  <script>
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-      });
-      document.getElementById(id).classList.add('active');
-    }
+  function goToQuestion() {
+    showScreen('questionScreen');
+  }
 
-    function goToQuestion() {
-      showScreen('questionScreen');
-    }
+  function goToTransition() {
+    showScreen('transitionScreen');
+    setTimeout(() => {
+      showScreen('game1');
+      spawnHeart();
+    }, 3000);
+  }
 
-    function goToTransition() {
-      showScreen('transitionScreen');
+  function spawnHeart() {
+    if (heartCount >= 10) return;
 
-      // transition pauses here (game not added yet)
-      setTimeout(() => {
-        console.log("Transition complete. Ready for Game 1.");
-      }, 3000);
-    }
+    const heart = document.createElement('div');
+    heart.innerHTML = '❤️';
+    heart.className = 'heart';
 
-    // Floating NO button logic
-    const noBtn = document.getElementById('noBtn');
-    noBtn.addEventListener('mouseover', () => {
-      const x = Math.random() * (window.innerWidth - 120);
-      const y = Math.random() * (window.innerHeight - 60);
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top = `${y}px`;
-    });
-  </script>
+    heart.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+    heart.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+
+    heart.onclick = () => {
+      heart.remove();
+      showCompliment();
+      heartCount++;
+      setTimeout(spawnHeart, 800);
+    };
+
+    document.body.appendChild(heart);
+  }
+
+  function showCompliment() {
+    const text = document.createElement('div');
+    text.className = 'compliment';
+    text.innerText = compliments[heartCount];
+    document.body.appendChild(text);
+
+    setTimeout(() => text.remove(), 2000);
+  }
+
+  // NO button logic
+  const noBtn = document.getElementById('noBtn');
+  noBtn.addEventListener('mouseover', () => {
+    noBtn.style.left = Math.random() * (window.innerWidth - 120) + 'px';
+    noBtn.style.top = Math.random() * (window.innerHeight - 60) + 'px';
+  });
+</script>
 
 </body>
 </html>
