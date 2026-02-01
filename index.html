@@ -1,279 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>For Mitthi ❤️</title>
+  <meta charset="UTF-8" />
+  <title>For Mitthi ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <!-- Romantic Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 
-<style>
-/* ===== GLOBAL ===== */
-body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(180deg,#fff7f9,#fdebf2);
-  font-family: 'Playfair Display', serif;
-  overflow: hidden;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-.screen {
-  position: absolute;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
+    body {
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffd6e8, #fff0f5);
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
 
-.active { display: flex; }
+    .screen {
+      display: none;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+    }
 
-/* ===== PAGE 1 ===== */
-#q1 h1 {
-  font-size: 64px;
-  text-align: center;
-}
+    .screen.active {
+      display: flex;
+    }
 
-#q1 .sub {
-  font-family: 'Great Vibes', cursive;
-  font-size: 42px;
-  margin-bottom: 40px;
-}
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3rem;
+      color: #d63384;
+      margin-bottom: 20px;
+    }
 
-.buttons {
-  display: flex;
-  gap: 40px;
-}
+    p {
+      font-size: 1.2rem;
+      color: #444;
+      margin-bottom: 30px;
+    }
 
-button {
-  font-size: 24px;
-  padding: 14px 34px;
-  border: none;
-  border-radius: 40px;
-  cursor: pointer;
-  background: #ffb3c6;
-}
+    button {
+      padding: 14px 30px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      background: #ff4d6d;
+      color: white;
+      transition: transform 0.2s ease;
+    }
 
-/* floating no */
-#noBtn {
-  position: absolute;
-}
+    button:hover {
+      transform: scale(1.05);
+    }
 
-/* ===== GAME 1 ===== */
-#game1 {
-  text-align: center;
-}
+    .gif {
+      width: 260px;
+      margin-top: 25px;
+    }
 
-#heart {
-  font-size: 90px;
-  cursor: pointer;
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-}
-
-#compliment {
-  margin-top: 20px;
-  font-size: 28px;
-  opacity: 0;
-  transition: opacity 0.6s;
-}
-
-/* ===== TRANSITION ===== */
-#transition img {
-  width: 320px;
-}
-
-#transition p {
-  margin-top: 20px;
-  font-size: 28px;
-}
-
-/* ===== GAME 2 (MAZE) ===== */
-#game2 {
-  gap: 16px;
-}
-
-#maze {
-  display: grid;
-  grid-template-columns: repeat(12,52px);
-  grid-template-rows: repeat(11,52px);
-  gap: 4px;
-  padding: 12px;
-  background: #f3d9e5;
-  border-radius: 18px;
-}
-
-.wall { background:#e6b3c6; border-radius:10px; }
-.path { background:#7ddc9b; border-radius:10px; position:relative; }
-
-.character {
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:32px;
-}
-
-#controls {
-  display:grid;
-  grid-template-columns:repeat(3,60px);
-  grid-template-rows:repeat(2,60px);
-  gap:8px;
-}
-
-#overlay {
-  position:fixed;
-  inset:0;
-  display:none;
-  background:rgba(255,255,255,.85);
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  z-index:10;
-}
-</style>
+    .no-btn {
+      position: absolute;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- PAGE 1 -->
-<div class="screen active" id="q1">
-  <h1>Will you be my Valentine?</h1>
-  <div class="sub">Mitthi ❤️</div>
-  <div class="buttons">
-    <button onclick="goGame1()">Yes</button>
-    <button id="noBtn">No</button>
+  <!-- PAGE 1 : START -->
+  <div id="startScreen" class="screen active">
+    <h1>Hey Mitthi 💗</h1>
+    <p>I made something special for you</p>
+    <button onclick="goToQuestion()">Start</button>
   </div>
-</div>
 
-<!-- GAME 1 -->
-<div class="screen" id="game1">
-  <h1>Tap the hearts 💖</h1>
-  <div id="heart" onclick="tapHeart()">❤️</div>
-  <div id="compliment"></div>
-</div>
+  <!-- PAGE 2 : QUESTION -->
+  <div id="questionScreen" class="screen">
+    <h1>Will you be my Valentine? 💖</h1>
 
-<!-- TRANSITION -->
-<div class="screen" id="transition">
-  <img src="https://media.giphy.com/media/26BRuo6sLetdllPAQ/giphy.gif">
-  <p>Loading something special…</p>
-</div>
+    <div style="margin-top: 20px;">
+      <button onclick="goToTransition()">Yes 💕</button>
+      <button class="no-btn" id="noBtn">No 🙈</button>
+    </div>
 
-<!-- GAME 2 -->
-<div class="screen" id="game2">
-  <div id="maze"></div>
-  <div id="controls">
-    <div></div>
-    <button onclick="move(0,-1)">⬆️</button>
-    <div></div>
-    <button onclick="move(-1,0)">⬅️</button>
-    <button onclick="move(0,1)">⬇️</button>
-    <button onclick="move(1,0)">➡️</button>
+    <!-- Cute Cat / Panda GIF -->
+    <img class="gif"
+      src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif"
+      alt="cute cat" />
   </div>
-</div>
 
-<div id="overlay">
-  <div style="font-size:80px">❤️</div>
-  <div style="font-size:26px;text-align:center">
-    Even the hardest paths lead to you.
+  <!-- TRANSITION 1 -->
+  <div id="transitionScreen" class="screen">
+    <h1>Wait a second… 😳</h1>
+    <p>I prepared something special</p>
+
+    <!-- Cat typing GIF -->
+    <img class="gif"
+      src="https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif"
+      alt="cat typing" />
   </div>
-</div>
 
-<script>
-/* ===== PAGE SWITCH ===== */
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-/* floating no */
-const noBtn = document.getElementById('noBtn');
-noBtn.onmouseover = () => {
-  noBtn.style.left = Math.random()*80+'%';
-  noBtn.style.top = Math.random()*80+'%';
-};
-
-/* ===== GAME 1 ===== */
-let hearts = 0;
-const msgs = [
-  "You’re magic ✨",
-  "You make my world softer",
-  "I smile because of you",
-  "You’re my peace",
-  "Still choosing you",
-  "You feel like home",
-  "Lucky me",
-  "Heart = yours",
-  "Always you",
-  "One last heart 💘"
-];
-
-function goGame1(){ show('game1'); }
-
-function tapHeart(){
-  const c = document.getElementById('compliment');
-  c.textContent = msgs[hearts];
-  c.style.opacity = 1;
-  setTimeout(()=>c.style.opacity=0,1500);
-  hearts++;
-  if(hearts===10){
-    setTimeout(()=>{
-      show('transition');
-      setTimeout(()=>show('game2'),3000);
-    },1600);
-  }
-}
-
-/* ===== GAME 2 (MAZE) ===== */
-const map=[
-[0,0,0,0,0,0,0,0,0,0,0,0],
-[0,1,1,1,0,1,0,1,1,1,1,0],
-[0,0,0,1,0,1,0,0,0,0,1,0],
-[0,1,1,1,1,1,1,1,0,1,1,0],
-[0,1,0,0,0,0,0,1,0,0,1,0],
-[0,1,1,1,1,1,0,1,1,1,1,0],
-[0,0,0,0,0,1,0,0,0,0,1,0],
-[0,1,1,1,0,1,1,1,1,0,1,0],
-[0,1,0,1,0,0,0,0,1,0,1,0],
-[0,1,0,1,1,1,1,0,1,1,1,0],
-[0,0,0,0,0,0,0,0,0,0,0,0]
-];
-
-let mitthi={x:1,y:1};
-const krishna={x:10,y:8};
-let finished=false;
-const maze=document.getElementById('maze');
-
-function render(){
-  maze.innerHTML='';
-  map.forEach((r,y)=>r.forEach((c,x)=>{
-    const d=document.createElement('div');
-    d.className=c?'path':'wall';
-    if(x===mitthi.x&&y===mitthi.y)d.innerHTML='<div class="character">👧</div>';
-    if(x===krishna.x&&y===krishna.y)d.innerHTML='<div class="character">🧍</div>';
-    maze.appendChild(d);
-  }));
-}
-
-function move(dx,dy){
-  if(finished)return;
-  const nx=mitthi.x+dx, ny=mitthi.y+dy;
-  if(map[ny][nx]===1){
-    mitthi={x:nx,y:ny};
-    render();
-    if(nx===krishna.x&&ny===krishna.y){
-      finished=true;
-      document.getElementById('overlay').style.display='flex';
+  <script>
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
     }
-  }
-}
 
-render();
-</script>
+    function goToQuestion() {
+      showScreen('questionScreen');
+    }
+
+    function goToTransition() {
+      showScreen('transitionScreen');
+
+      // transition pauses here (game not added yet)
+      setTimeout(() => {
+        console.log("Transition complete. Ready for Game 1.");
+      }, 3000);
+    }
+
+    // Floating NO button logic
+    const noBtn = document.getElementById('noBtn');
+    noBtn.addEventListener('mouseover', () => {
+      const x = Math.random() * (window.innerWidth - 120);
+      const y = Math.random() * (window.innerHeight - 60);
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    });
+  </script>
 
 </body>
 </html>
